@@ -1,4 +1,4 @@
-import type { DB, HealEvent, ProductRecord, Run } from "@/types";
+import { type DB, type HealEvent, type ProductRecord, type Run, HEAL_STAGE_ORDER } from "@/types";
 import { DEMO_TARGET_SOURCE_ID, getDataset, mutate, pushActivity, readDb } from "@/lib/store";
 import { generateProducts } from "@/lib/demo/data";
 import { uid } from "@/lib/utils";
@@ -21,9 +21,15 @@ function failureDiagnosis(sourceName: string, fields: string[]) {
 async function hasDueTransitions(): Promise<boolean> {
   const db = await readDb();
   const nowMs = Date.now();
-  return db.healEvents.some(
-    (e) => e.simulated && e.schedule.some((t) => t.at <= nowMs),
-  );
+  return db.healEvents.some((e) => {
+    if (!e.simulated || !e.schedule.length) return false;
+    const currentIdx = HEAL_STAGE_ORDER.indexOf(e.stage);
+    const due = e.schedule
+      .filter((t) => t.at <= nowMs)
+      .sort((a, b) => HEAL_STAGE_ORDER.indexOf(a.stage) - HEAL_STAGE_ORDER.indexOf(b.stage));
+    if (!due.length) return false;
+    return HEAL_STAGE_ORDER.indexOf(due[due.length - 1].stage) > currentIdx;
+  });
 }
 
 /** Apply any due scheduled stage transitions (called from read endpoints). */
@@ -31,18 +37,29 @@ export async function tickDemo(): Promise<void> {
   if (!(await hasDueTransitions())) return;
   await mutate((db) => {
     const nowMs = Date.now();
+    let mutated = false;
     for (const event of db.healEvents) {
       if (!event.simulated || !event.schedule.length) continue;
-      const due = event.schedule.filter((t) => t.at <= nowMs);
+      
+      const currentIdx = HEAL_STAGE_ORDER.indexOf(event.stage);
+      const due = event.schedule
+        .filter((t) => t.at <= nowMs)
+        .sort((a, b) => HEAL_STAGE_ORDER.indexOf(a.stage) - HEAL_STAGE_ORDER.indexOf(b.stage));
+        
       if (!due.length) continue;
-      event.schedule = event.schedule.filter((t) => t.at > nowMs);
-
-      for (const transition of due) {
-        applyStageTransition(db, event, transition.stage);
+      
+      const targetTransition = due[due.length - 1];
+      const targetIdx = HEAL_STAGE_ORDER.indexOf(targetTransition.stage);
+      
+      if (targetIdx > currentIdx) {
+        for (let i = currentIdx + 1; i <= targetIdx; i++) {
+          applyStageTransition(db, event, HEAL_STAGE_ORDER[i]);
+        }
+        event.updatedAt = new Date().toISOString();
+        mutated = true;
       }
-      event.updatedAt = new Date().toISOString();
     }
-    syncDemoPhase(db);
+    if (mutated) syncDemoPhase(db);
   });
 }
 

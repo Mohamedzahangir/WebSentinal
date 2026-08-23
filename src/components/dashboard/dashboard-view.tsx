@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect, useState } from "react";
 import { DemoPanel } from "@/components/dashboard/demo-panel";
 import { SentinelNetwork } from "@/components/dashboard/sentinel-network";
 import { apiGet, usePolling } from "@/lib/client";
@@ -8,10 +8,19 @@ import type { DashboardPayload } from "@/types";
 import { X, AlertTriangle } from "lucide-react";
 
 export function DashboardView() {
+  const [pollInterval, setPollInterval] = useState(4000);
   const { data, loading, refresh } = usePolling<DashboardPayload>(
     () => apiGet<DashboardPayload>("/api/dashboard"),
-    4000,
+    pollInterval,
   );
+
+  useEffect(() => {
+    if (data?.demo.enabled && !["idle", "recovered", "rejected"].includes(data.demo.phase)) {
+      setPollInterval(1000);
+    } else {
+      setPollInterval(4000);
+    }
+  }, [data?.demo.phase, data?.demo.enabled]);
 
   if (loading && !data) {
     return (
