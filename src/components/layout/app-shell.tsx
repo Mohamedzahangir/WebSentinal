@@ -57,8 +57,8 @@ export function AppShell({
 
   return (
     <div className="flex min-h-dvh">
-      {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[232px] flex-col border-r border-white/[0.06] bg-zinc-950/80 backdrop-blur md:flex">
+      {/* Desktop sidebar -> Floating Comic Strip */}
+      <aside className="fixed top-20 left-6 z-40 hidden w-[240px] flex-col border border-white/[0.08] bg-[#0A0A0A]/95 backdrop-blur comic-panel comic-shadow md:flex">
         <Logo />
         <nav className="flex-1 space-y-1 px-3 py-4">
           {NAV.map((item) => (
@@ -74,9 +74,9 @@ export function AppShell({
       </aside>
 
       {/* Mobile topbar */}
-      <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-white/[0.06] bg-zinc-950/90 px-4 backdrop-blur md:hidden">
+      <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-white/[0.08] bg-[#050505]/95 px-4 backdrop-blur md:hidden">
         <Link href="/" className="font-mono text-sm font-bold tracking-[0.18em] text-zinc-100">
-          WEB<span className="text-cyan-400">SENTINEL</span>
+          WEB<span className="text-[#a855f7]">SENTINEL</span>
         </Link>
         <div className="flex items-center gap-2">
           {demo?.enabled ? <DemoBadge small /> : null}
@@ -111,7 +111,14 @@ export function AppShell({
         </div>
       ) : null}
 
-      <main className="min-w-0 flex-1 px-4 pb-16 pt-20 md:pl-[264px] md:pr-8 md:pt-8 lg:pl-[280px] lg:pr-10">
+      <main 
+        className={cn(
+          "min-w-0 flex-1 transition-all",
+          pathname === "/dashboard" 
+            ? "p-0 h-dvh overflow-hidden relative" 
+            : "px-4 pb-16 pt-20 md:pl-[300px] md:pr-8 md:pt-20 lg:pl-[300px] lg:pr-10"
+        )}
+      >
         {children}
       </main>
     </div>
@@ -140,21 +147,21 @@ function NavLink({
       href={href}
       onClick={onNavigate}
       className={cn(
-        "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-150",
+        "group flex items-center gap-2.5 rounded-none px-3 py-2.5 text-[13px] font-mono font-bold tracking-wider uppercase transition-all duration-150 border border-transparent",
         active
-          ? "bg-white/[0.07] text-zinc-100"
-          : "text-zinc-500 hover:bg-white/[0.04] hover:text-zinc-200",
+          ? "bg-[#050505] text-zinc-100 border-l-[#e21d2f] border-l-[3px] comic-offset"
+          : "text-zinc-500 hover:bg-white/[0.04] hover:text-zinc-200 hover:translate-x-1 hover:border-l-white/20 border-l-[3px]",
       )}
     >
       <Icon
         className={cn(
           "h-4 w-4 transition-colors",
-          active ? "text-cyan-400" : "text-zinc-600 group-hover:text-zinc-400",
+          active ? "text-[#e21d2f]" : "text-zinc-600 group-hover:text-zinc-400",
         )}
       />
       {label}
       {badgeKey === "incidents" && (incidents ?? 0) > 0 ? (
-        <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500/15 px-1.5 text-[10px] font-semibold text-red-400">
+        <span className="ml-auto flex h-5 min-w-5 items-center justify-center bg-[#e21d2f] px-1.5 text-[10px] font-bold text-white comic-shadow">
           {incidents}
         </span>
       ) : null}
@@ -164,12 +171,9 @@ function NavLink({
 
 function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2.5 border-b border-white/[0.06] px-5 py-[18px]">
-      <span className="relative flex h-7 w-7 items-center justify-center rounded-lg border border-cyan-500/30 bg-cyan-500/10">
-        <Radar className="h-3.5 w-3.5 text-cyan-400" />
-      </span>
-      <span className="font-mono text-[13px] font-bold tracking-[0.18em] text-zinc-100">
-        WEB<span className="text-cyan-400">SENTINEL</span>
+    <Link href="/" className="flex items-center gap-2.5 border-b border-white/[0.08] px-5 py-[18px]">
+      <span className="font-mono text-lg font-bold tracking-[0.2em] text-zinc-100 comic-offset-text">
+        WEB<span className="text-[#e21d2f]">SENTINEL</span>
       </span>
     </Link>
   );
@@ -177,11 +181,11 @@ function Logo() {
 
 function SidebarFooter({ stacked }: { stacked?: boolean }) {
   return (
-    <div className={cn("border-t border-white/[0.06] p-4", stacked && "w-full")}>
-      <div className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-        <Activity className="h-3.5 w-3.5 text-cyan-500" />
-        <p className="text-[11px] leading-tight text-zinc-500">
-          Bright Data CLI connected
+    <div className={cn("border-t border-white/[0.08] p-4 bg-black", stacked && "w-full")}>
+      <div className="flex items-center gap-2 border border-white/[0.08] bg-white/[0.01] px-3 py-2.5 comic-shadow">
+        <Activity className="h-3.5 w-3.5 text-[#22c55e]" />
+        <p className="font-mono text-[10px] uppercase tracking-widest leading-tight text-zinc-400">
+          BRIGHT DATA <span className="text-white">● CONNECTED</span>
         </p>
       </div>
     </div>

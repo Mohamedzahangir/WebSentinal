@@ -6,11 +6,17 @@
 }
 
 @theme {
-  --color-accent: #06b6d4; /* Cyan accent */
-  --color-accent-soft: rgba(6, 182, 212, 0.12);
-  --color-healthy: #10b981;
+  --color-miles-red: #e21d2f;
+  --color-spider-red: #ff1744;
+  --color-electric-purple: #8b5cf6;
+  --color-spider-blue: #2563eb;
+  --color-electric-cyan: #22d3ee;
+  
+  --color-accent: #e21d2f; /* Primary accent is Miles Red */
+  --color-accent-soft: rgba(226, 29, 47, 0.12);
+  --color-healthy: #22c55e;
   --color-warning: #f59e0b;
-  --color-failed: #ef4444;
+  --color-failed: #e21d2f;
   
   --animate-fade-up: fade-up 0.45s cubic-bezier(0.21, 1.02, 0.73, 1) both;
   --animate-pulse-subtle: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -20,6 +26,8 @@
   --animate-flow: flow 1.2s linear infinite;
   --animate-fracture: fracture 0.3s ease-out forwards;
   --animate-reconstruct: reconstruct 0.6s ease-out forwards;
+  --animate-glitch: glitch 0.2s cubic-bezier(.25, .46, .45, .94) both;
+  --animate-spider-sense: spider-sense 0.4s ease-out;
 }
 
 @keyframes fade-up {
@@ -55,14 +63,29 @@
 
 @keyframes fracture {
   0% { opacity: 1; stroke-dasharray: 100 0; }
-  50% { opacity: 0.5; stroke-dasharray: 10 10; }
-  100% { opacity: 0.2; stroke-dasharray: 2 20; }
+  50% { opacity: 0.5; stroke-dasharray: 10 10; transform: translate(1px, -1px); }
+  100% { opacity: 0.3; stroke-dasharray: 2 20; transform: translate(-1px, 1px); }
 }
 
 @keyframes reconstruct {
-  0% { opacity: 0.2; stroke-dasharray: 2 20; }
+  0% { opacity: 0.3; stroke-dasharray: 2 20; }
   50% { opacity: 0.8; stroke-dasharray: 20 5; }
   100% { opacity: 1; stroke-dasharray: 100 0; }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0) }
+  20% { transform: translate(-3px, 3px) }
+  40% { transform: translate(-3px, -3px) }
+  60% { transform: translate(3px, 3px) }
+  80% { transform: translate(3px, -3px) }
+  100% { transform: translate(0) }
+}
+
+@keyframes spider-sense {
+  0% { box-shadow: inset 0 0 0px rgba(226, 29, 47, 0); transform: scale(1); filter: contrast(1); }
+  20% { box-shadow: inset 0 0 100px rgba(226, 29, 47, 0.8); transform: scale(1.005); filter: contrast(1.2); }
+  100% { box-shadow: inset 0 0 0px rgba(226, 29, 47, 0); transform: scale(1); filter: contrast(1); }
 }
 
 html {
@@ -70,10 +93,14 @@ html {
 }
 
 body {
-  background-color: #0a0a0c; /* Near-black/graphite */
-  color: #f4f4f5;
+  background-color: #050505;
+  color: #f5f5f5;
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  background-image: 
+    linear-gradient(to right, rgba(255,255,255,0.01) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.01) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -86,7 +113,7 @@ body {
 }
 
 ::selection {
-  background: rgba(6, 182, 212, 0.25);
+  background: rgba(124, 58, 237, 0.4);
 }
 
 * {
@@ -117,16 +144,34 @@ body {
 }
 
 .card {
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.01);
+  box-shadow: 2px 2px 0px rgba(226, 29, 47, 0.1); 
+  border-radius: 2px;
 }
 
-.grid-bg {
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 20%, transparent 80%);
+.comic-shadow {
+  box-shadow: 3px 3px 0px rgba(226, 29, 47, 0.4);
+}
+
+.comic-offset {
+  box-shadow: 4px 4px 0px rgba(37, 99, 235, 0.4), -4px -4px 0px rgba(226, 29, 47, 0.4);
+}
+
+.comic-offset-text {
+  text-shadow: 2px 2px 0px rgba(37, 99, 235, 0.4), -2px -2px 0px rgba(226, 29, 47, 0.4);
+}
+
+.comic-panel {
+  clip-path: polygon(0 0, 100% 0, 98% 100%, 2% 100%);
+}
+
+.halftone-bg {
+  background-image: radial-gradient(rgba(255,255,255, 0.15) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+.halftone-red {
+  background-image: radial-gradient(rgba(226, 29, 47, 0.2) 1px, transparent 1px);
+  background-size: 4px 4px;
 }
