@@ -11,14 +11,14 @@ import { useRouter } from "next/navigation";
 type NetworkSource = DashboardPayload["sources"][0];
 
 const ORGANIC_POSITIONS = [
-  { dx: -220, dy: -80, textY: 28 },   // Top Left
-  { dx: 260, dy: -100, textY: 28 },   // Top Right
+  { dx: -220, dy: -70, textY: 28 },   // Top Left
+  { dx: 140, dy: -90, textY: 28 },    // Top Right (Pulled in)
   { dx: -240, dy: 100, textY: 28 },   // Bottom Far Left
-  { dx: 180, dy: 120, textY: 28 },    // Bottom Right Close
-  { dx: -120, dy: 150, textY: 28 },   // Bottom Left Close
-  { dx: 300, dy: 30, textY: 28 },     // Mid Right Far
-  { dx: -80, dy: -140, textY: -20 },  // Top Center Left (label above to avoid core)
-  { dx: 120, dy: -130, textY: -20 },  // Top Center Right (label above)
+  { dx: 100, dy: 130, textY: 28 },    // Bottom Right Close
+  { dx: -120, dy: 140, textY: 28 },   // Bottom Left Close
+  { dx: 180, dy: 30, textY: 28 },     // Mid Right Far (Pulled in heavily)
+  { dx: -80, dy: -130, textY: -20 },  // Top Center Left (label above)
+  { dx: 80, dy: -120, textY: -20 },   // Top Center Right (label above)
 ];
 
 function TelemetryItem({ label, value, icon: Icon, highlight = false }: { label: string; value: string | number; icon?: any; highlight?: boolean }) {
@@ -303,7 +303,7 @@ export function SentinelNetwork({
 
       {/* Focus Panel (Only show if not in demo mode) */}
       {focusedNode && !demo.enabled && (
-        <div className="absolute inset-x-4 bottom-4 md:inset-x-auto md:right-10 md:top-10 md:bottom-auto md:w-80 bg-[#050505]/95 backdrop-blur-md border-[2px] border-[#e21d2f]/50 p-6 comic-shadow flex flex-col animate-fade-up z-20 pointer-events-auto comic-panel">
+        <div className="absolute inset-x-4 bottom-4 md:inset-x-auto md:right-10 md:bottom-10 md:top-auto md:w-80 bg-[#050505]/95 backdrop-blur-md border-[2px] border-[#e21d2f]/50 p-6 comic-shadow flex flex-col animate-fade-up z-20 pointer-events-auto comic-panel">
           <div className="flex justify-between items-start mb-6">
             <div>
               <p className="font-mono text-[10px] tracking-widest uppercase text-[#8b5cf6] mb-1 font-bold">╔ Source Focus ╗</p>

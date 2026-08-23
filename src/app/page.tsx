@@ -9,6 +9,7 @@ import {
   Stethoscope,
   Wrench,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const metadata = { title: "WebSentinel · Web intelligence that never goes blind" };
 
@@ -41,29 +42,23 @@ const STEPS = [
 
 export default function Landing() {
   return (
-    <div className="relative min-h-dvh overflow-x-clip">
+    <div className="relative min-h-dvh overflow-x-clip bg-[#0A0A0A]">
       {/* Backdrop */}
-      <div className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-[560px]" />
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[420px]"
-        style={{
-          background:
-            "radial-gradient(60% 50% at 50% 0%, rgba(16,185,129,0.09), transparent 70%)",
-        }}
-      />
+      <div className="absolute inset-0 halftone-bg opacity-30 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A] pointer-events-none" />
 
-      <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10">
-            <Radar className="h-4 w-4 text-emerald-400" />
+      <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
+        <div className="flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center border-[2px] border-[#e21d2f] bg-[#e21d2f]/10 comic-shadow">
+            <Radar className="h-5 w-5 text-[#e21d2f]" />
           </span>
-          <span className="font-mono text-sm font-bold tracking-[0.18em]">
-            WEB<span className="text-emerald-400">SENTINEL</span>
+          <span className="font-mono text-lg font-black tracking-[0.2em] comic-offset-text uppercase text-white">
+            WEB<span className="text-[#e21d2f]">SENTINEL</span>
           </span>
         </div>
         <Link
           href="/dashboard"
-          className="text-[13px] font-medium text-zinc-400 transition-colors hover:text-zinc-100"
+          className="font-mono text-[11px] font-bold tracking-widest text-[#8b5cf6] transition-colors hover:text-[#e21d2f] uppercase"
         >
           Open Dashboard →
         </Link>
@@ -71,32 +66,32 @@ export default function Landing() {
 
       {/* Hero */}
       <main className="relative z-10 mx-auto max-w-6xl px-6">
-        <section className="pb-16 pt-16 text-center md:pt-24">
-          <p className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-[11px] font-medium tracking-wide text-zinc-400">
-            <Activity className="h-3 w-3 text-emerald-500" />
+        <section className="pb-16 pt-16 text-center md:pt-24 relative">
+          <p className="mx-auto mb-6 inline-flex items-center gap-2 border-[2px] border-[#8b5cf6]/40 bg-[#050505]/80 px-4 py-1.5 font-mono text-[10px] font-bold tracking-[0.2em] text-[#8b5cf6] uppercase comic-shadow">
+            <Activity className="h-3.5 w-3.5 text-[#e21d2f]" />
             Autonomous web intelligence platform
           </p>
-          <h1 className="mx-auto max-w-4xl font-mono text-[38px] font-bold leading-[1.06] tracking-tight sm:text-6xl md:text-[68px]">
+          <h1 className="mx-auto max-w-5xl font-mono text-[42px] font-black leading-[1.05] tracking-tight sm:text-6xl md:text-[76px] comic-offset-text uppercase text-white">
             WEB INTELLIGENCE
             <br />
-            <span className="bg-gradient-to-b from-emerald-200 via-emerald-400 to-emerald-600 bg-clip-text text-transparent">
+            <span className="text-[#e21d2f]">
               THAT NEVER GOES BLIND.
             </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-[15px] leading-relaxed text-zinc-400">
+          <p className="mx-auto mt-8 max-w-2xl text-[16px] leading-relaxed text-zinc-300 font-medium">
             WebSentinel detects website changes, repairs broken extraction pipelines
             with Bright Data&apos;s self-healing Collectors, and keeps your intelligence flowing.
           </p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row">
             <Link
               href="/dashboard"
-              className="inline-flex h-11 items-center gap-2 rounded-lg bg-emerald-500 px-7 text-sm font-semibold text-zinc-950 shadow-[0_0_24px_rgba(16,185,129,0.25)] transition-all hover:bg-emerald-400 hover:shadow-[0_0_32px_rgba(16,185,129,0.35)]"
+              className="inline-flex h-14 items-center gap-3 bg-[#e21d2f] px-8 font-mono text-[13px] font-black tracking-[0.15em] text-[#050505] transition-all hover:bg-white hover:text-[#e21d2f] uppercase comic-offset border-[2px] border-[#050505]"
             >
-              Start Monitoring <ArrowRight className="h-4 w-4" />
+              Start Monitoring <ArrowRight className="h-5 w-5" />
             </Link>
             <Link
               href="/healing"
-              className="inline-flex h-11 items-center gap-2 rounded-lg border border-white/[0.12] px-7 text-sm font-medium text-zinc-200 transition-colors hover:border-white/25 hover:bg-white/[0.04]"
+              className="inline-flex h-14 items-center gap-3 border-[2px] border-[#e21d2f] bg-[#050505] px-8 font-mono text-[13px] font-black tracking-[0.15em] text-[#e21d2f] transition-all hover:bg-[#e21d2f] hover:text-[#050505] uppercase comic-shadow"
             >
               View Self-Heal Demo
             </Link>
@@ -104,51 +99,59 @@ export default function Landing() {
         </section>
 
         {/* Pipeline */}
-        <section className="border-t border-white/[0.06] py-14">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {STEPS.map((s) => (
+        <section className="border-t-[3px] border-white/10 py-20 relative">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-4 relative z-10">
+            {STEPS.map((s, i) => (
               <div
                 key={s.key}
-                className="card group p-5 transition-colors duration-300 hover:border-emerald-500/25"
+                className="bg-[#050505]/95 border-[2px] border-[#8b5cf6]/30 p-6 comic-shadow transition-all duration-300 hover:border-[#e21d2f] comic-panel relative group"
               >
-                <s.icon className="h-[18px] w-[18px] text-emerald-500" />
-                <p className="mt-4 font-mono text-[10px] font-semibold tracking-[0.18em] text-zinc-500 transition-colors group-hover:text-emerald-400">
+                <div className="absolute -top-3 -right-3 font-mono text-4xl font-black text-white/5 group-hover:text-[#e21d2f]/10 transition-colors pointer-events-none">
+                  0{i + 1}
+                </div>
+                <s.icon className="h-6 w-6 text-[#e21d2f]" />
+                <p className="mt-5 font-mono text-[11px] font-black tracking-[0.2em] text-[#8b5cf6] transition-colors group-hover:text-[#e21d2f] uppercase">
                   {s.key}
                 </p>
-                <h3 className="mt-1 text-sm font-semibold text-zinc-100">{s.title}</h3>
-                <p className="mt-2 text-xs leading-relaxed text-zinc-500">{s.body}</p>
+                <h3 className="mt-2 text-base font-bold text-white uppercase tracking-wider">{s.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-zinc-400 font-medium">{s.body}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Live recovery visual */}
-        <section className="pb-20 pt-6">
-          <div className="card relative mx-auto max-w-3xl overflow-hidden p-6 sm:p-8">
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
-            <p className="label-micro">Live self-heal event</p>
+        <section className="pb-24 pt-10">
+          <div className="bg-[#050505]/95 border-[2px] border-[#e21d2f]/40 relative mx-auto max-w-3xl overflow-hidden p-8 sm:p-10 comic-panel comic-shadow">
+            <p className="font-mono text-[10px] font-black tracking-[0.2em] text-[#e21d2f] uppercase mb-8 flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full bg-[#e21d2f] opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 bg-[#e21d2f]"></span>
+              </span>
+              Live self-heal event
+            </p>
 
-            <div className="mt-6 space-y-0">
+            <div className="space-y-4 relative z-10">
               <TimelineRow
                 label="BEFORE"
-                value={<>2,391 <span className="text-xs font-normal text-zinc-500">records</span></>}
+                value={<>2,391 <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">records</span></>}
                 tone="neutral"
               />
               <TimelineRow
                 label="FAILURE"
-                value={<>0 <span className="text-xs font-normal text-red-400/80">records · health 0%</span></>}
+                value={<>0 <span className="text-xs font-bold text-[#e21d2f] uppercase tracking-widest">records · health 0%</span></>}
                 tone="danger"
               />
               <TimelineRow
                 label="DIAGNOSIS"
-                value={<span className="text-sm font-normal text-zinc-300">DOM structure changed</span>}
+                value={<span className="text-[13px] font-bold text-zinc-300 uppercase tracking-widest">DOM structure changed</span>}
                 tone="info"
               />
               <TimelineRow
                 label="REPAIR"
                 value={
-                  <span className="font-mono text-xs text-zinc-300">
-                    Bright Data Collector <span className="text-emerald-400">c_xxxxxxxx</span> repaired
+                  <span className="font-mono text-[11px] font-bold text-zinc-300 uppercase tracking-widest">
+                    Bright Data Collector <span className="text-[#8b5cf6]">c_xxxxxxxx</span> repaired
                   </span>
                 }
                 tone="warn"
@@ -157,9 +160,9 @@ export default function Landing() {
                 label="AFTER"
                 value={
                   <>
-                    2,391 <span className="text-xs font-normal text-zinc-500">records</span>{" "}
-                    <span className="ml-2 inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-400">
-                      <CheckCircle2 className="h-3 w-3" /> VERIFIED
+                    2,391 <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">records</span>{" "}
+                    <span className="ml-3 inline-flex items-center gap-1.5 text-[11px] font-black tracking-widest text-[#22c55e]">
+                      <CheckCircle2 className="h-4 w-4" /> VERIFIED
                     </span>
                   </>
                 }
@@ -167,15 +170,17 @@ export default function Landing() {
               />
             </div>
 
-            <Link
-              href="/healing"
-              className="mt-7 inline-flex items-center gap-1.5 text-[13px] font-medium text-emerald-400 transition-colors hover:text-emerald-300"
-            >
-              See it live in the dashboard <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+            <div className="mt-10 flex justify-center">
+              <Link
+                href="/healing"
+                className="inline-flex items-center gap-2 font-mono text-[11px] font-black tracking-[0.15em] text-[#e21d2f] transition-colors hover:text-white uppercase"
+              >
+                See it live in the dashboard <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
 
-          <p className="mt-12 text-center text-xs leading-relaxed text-zinc-600">
+          <p className="mt-16 text-center font-mono text-[10px] font-bold uppercase tracking-[0.15em] leading-relaxed text-zinc-600">
             Built on Bright Data Scraper Studio · Next.js · Real collectors, real healing, labeled simulations.
           </p>
         </section>
@@ -185,11 +190,11 @@ export default function Landing() {
 }
 
 const TONES = {
-  neutral: "border-white/[0.07]",
-  danger: "border-red-500/25 shadow-[inset_2px_0_0_0_rgba(239,68,68,0.55)]",
-  info: "border-sky-500/20 shadow-[inset_2px_0_0_0_rgba(56,189,248,0.5)]",
-  warn: "border-amber-500/20 shadow-[inset_2px_0_0_0_rgba(245,158,11,0.5)]",
-  success: "border-emerald-500/30 shadow-[inset_2px_0_0_0_rgba(16,185,129,0.6)]",
+  neutral: "border-white/10",
+  danger: "border-[#e21d2f]/40 bg-[#e21d2f]/5 shadow-[inset_4px_0_0_0_#e21d2f]",
+  info: "border-[#8b5cf6]/40 bg-[#8b5cf6]/5 shadow-[inset_4px_0_0_0_#8b5cf6]",
+  warn: "border-[#f59e0b]/40 bg-[#f59e0b]/5 shadow-[inset_4px_0_0_0_#f59e0b]",
+  success: "border-[#22c55e]/40 bg-[#22c55e]/5 shadow-[inset_4px_0_0_0_#22c55e]",
 } as const;
 
 function TimelineRow({
@@ -202,9 +207,10 @@ function TimelineRow({
   tone: keyof typeof TONES;
 }) {
   return (
-    <div className={`mb-2 flex items-center justify-between rounded-lg border bg-black/20 px-4 py-3 ${TONES[tone]}`}>
-      <span className="label-micro">{label}</span>
-      <span className="font-mono text-lg font-bold tabular-nums text-zinc-100">{value}</span>
+    <div className={cn("flex items-center justify-between border-[2px] bg-[#050505] px-5 py-4 transition-all comic-shadow", TONES[tone])}>
+      <span className="font-mono text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400">{label}</span>
+      <span className="font-mono text-xl font-black text-white">{value}</span>
     </div>
   );
 }
+
