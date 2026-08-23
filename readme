@@ -1,0 +1,450 @@
+# WebSentinel
+
+### Self-Healing Web Monitoring and Extraction
+
+Websites change constantly.
+
+A CSS class gets renamed, a page layout is redesigned, or a piece of content starts loading dynamically. Suddenly, a scraper that worked perfectly yesterday starts returning empty or incorrect data.
+
+**WebSentinel** is built to handle that problem.
+
+Instead of treating web scraping as a one-time script, WebSentinel continuously monitors extraction, detects when something goes wrong, investigates what changed, and attempts to recover the extraction automatically.
+
+---
+
+## Why WebSentinel?
+
+Anyone who has worked with web scraping knows the cycle:
+
+```text
+Build scraper
+     ↓
+Test scraper
+     ↓
+Deploy
+     ↓
+Website changes
+     ↓
+Scraper breaks
+     ↓
+Manually debug and fix
+```
+
+The problem isn't scraping a website once.
+
+The problem is **keeping the extraction reliable as the website evolves**.
+
+WebSentinel aims to reduce that maintenance burden by introducing an automated monitoring and recovery loop.
+
+---
+
+## How It Works
+
+WebSentinel follows a continuous process:
+
+```text
+Website
+   ↓
+Extract Data
+   ↓
+Validate Data
+   ↓
+Detect Anomaly
+   ↓
+Analyze Change
+   ↓
+Adapt Extraction
+   ↓
+Retry
+   ↓
+Verify
+   ↓
+Continue Monitoring
+```
+
+When extraction works normally, the system simply continues monitoring.
+
+When something changes, WebSentinel treats it as an incident that needs to be investigated rather than simply reporting a scraper failure.
+
+---
+
+## Example
+
+Imagine monitoring a product page.
+
+Initially, the scraper returns:
+
+```text
+Product: Example Phone
+Price: ₹79,999
+Availability: In Stock
+```
+
+The website later changes its product-page structure.
+
+The scraper now returns:
+
+```text
+Product: Example Phone
+Price: null
+Availability: null
+```
+
+A traditional scraper would simply report an error.
+
+WebSentinel detects that the extraction result is abnormal and begins investigating the change.
+
+The system can then:
+
+1. Detect the missing fields.
+2. Analyze the available page information.
+3. Identify potential changes in the page structure.
+4. Generate an updated extraction strategy.
+5. Retry the extraction.
+6. Validate the new result.
+7. Mark the extraction as recovered if the result passes validation.
+
+The objective is simple:
+
+```text
+Website changes
+      ↓
+Detection
+      ↓
+Diagnosis
+      ↓
+Recovery
+      ↓
+Verification
+```
+
+---
+
+## Core Features
+
+### Continuous Monitoring
+
+Monitor configured websites and periodically collect the information that matters.
+
+Examples include:
+
+* Product prices
+* Product availability
+* Ratings
+* Titles
+* Other structured web data
+
+### Extraction Validation
+
+WebSentinel doesn't consider a request successful just because it returned a response.
+
+It checks whether the expected fields are actually present and whether the extracted values are reasonable.
+
+For example:
+
+```json
+{
+  "product": "Example Phone",
+  "price": null,
+  "availability": null
+}
+```
+
+The request succeeded technically, but the extraction did not.
+
+### Change Detection
+
+WebSentinel looks for signs that the expected extraction behavior has changed.
+
+This can include:
+
+* Missing fields
+* Unexpected empty values
+* Schema changes
+* Sudden changes in extracted data
+* Structural changes in target pages
+
+### AI-Assisted Diagnosis
+
+When an extraction fails, the system analyzes the available information to understand the possible cause.
+
+Instead of simply saying:
+
+```text
+Scraper failed
+```
+
+the goal is to provide useful context such as:
+
+```text
+Expected field: price
+
+Observed: missing
+
+Possible cause:
+The target element or page structure has changed.
+```
+
+### Self-Healing Extraction
+
+After identifying a potential structural change, WebSentinel can attempt to adapt the extraction strategy and run the process again.
+
+The new result is then validated before the system considers the recovery successful.
+
+### Monitoring Dashboard
+
+The dashboard provides an overview of the monitored extraction pipelines, including:
+
+* Active websites
+* Extraction status
+* Successful runs
+* Failed runs
+* Detected incidents
+* Recovery attempts
+* Current scraper health
+* Extraction history
+
+---
+
+## Architecture
+
+```text
+                     User
+                       |
+                       v
+                +--------------+
+                |   Dashboard  |
+                +------+-------+
+                       |
+                       v
+              +-------------------+
+              |   WebSentinel     |
+              |      Engine       |
+              +---------+---------+
+                        |
+          +-------------+-------------+
+          |             |             |
+          v             v             v
+     Monitoring    Validation     Incident
+       Engine        Engine       Manager
+          |             |             |
+          +-------------+-------------+
+                        |
+                        v
+                +---------------+
+                |  AI Analysis  |
+                +-------+-------+
+                        |
+                        v
+                +---------------+
+                | Self-Healing  |
+                |    Engine     |
+                +-------+-------+
+                        |
+                        v
+              +-------------------+
+              |   Bright Data    |
+              |  Scraper Studio  |
+              +---------+---------+
+                        |
+                        v
+                      Web
+```
+
+---
+
+## Bright Data Integration
+
+WebSentinel uses **Bright Data's scraping infrastructure** as the web extraction layer.
+
+The idea is to separate the responsibilities:
+
+```text
+Bright Data
+    ↓
+Reliable web access and extraction
+
+WebSentinel
+    ↓
+Monitoring
+Validation
+Failure detection
+AI-assisted diagnosis
+Recovery
+```
+
+This allows WebSentinel to focus on the intelligence and reliability layer instead of rebuilding the underlying web-access infrastructure.
+
+---
+
+## What Makes WebSentinel Different?
+
+There are already many tools capable of scraping websites.
+
+WebSentinel focuses on what happens **after the scraper breaks**.
+
+### Traditional Approach
+
+```text
+Website changes
+      ↓
+Scraper breaks
+      ↓
+Developer notices
+      ↓
+Manual investigation
+      ↓
+Manual fix
+      ↓
+Redeploy
+```
+
+### WebSentinel Approach
+
+```text
+Website changes
+      ↓
+WebSentinel detects it
+      ↓
+Analyzes the problem
+      ↓
+Attempts recovery
+      ↓
+Validates the result
+      ↓
+Continues monitoring
+```
+
+The goal is not to claim that every failure can be automatically fixed.
+
+The goal is to automate the repetitive maintenance involved in keeping extraction pipelines reliable.
+
+---
+
+## Use Cases
+
+### E-commerce Monitoring
+
+Track:
+
+* Product prices
+* Stock availability
+* Discounts
+* Product information
+
+### Market Intelligence
+
+Monitor competitor websites and marketplaces for changes in publicly available information.
+
+### Research
+
+Maintain structured datasets collected from changing websites.
+
+### Business Intelligence
+
+Keep external web-data pipelines running without requiring constant manual maintenance.
+
+---
+
+## Technology
+
+The system is built around:
+
+* **Bright Data Scraper Studio** — Web extraction infrastructure
+* **AI/LLM layer** — Failure analysis and adaptive extraction
+* **Web application** — Monitoring and visualization
+* **Validation layer** — Extraction quality and anomaly detection
+
+---
+
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone <repository-url>
+cd web-sentinel
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create your environment file:
+
+```bash
+cp .env.example .env
+```
+
+Configure the required API credentials and environment variables.
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+---
+
+## Environment Variables
+
+Example:
+
+```env
+BRIGHT_DATA_API_KEY=your_api_key
+AI_API_KEY=your_ai_api_key
+```
+
+Never commit API keys or other secrets to the repository.
+
+---
+
+## Project Status
+
+WebSentinel is being developed as part of the **Scrape-Verse Hackathon**.
+
+The current focus is building a working demonstration of the complete monitoring and self-healing workflow:
+
+```text
+Monitor
+   ↓
+Detect
+   ↓
+Diagnose
+   ↓
+Recover
+   ↓
+Verify
+```
+
+---
+
+## Future Improvements
+
+Some areas we plan to explore include:
+
+* More robust website change detection
+* Improved recovery strategies
+* Historical page and extraction comparison
+* Better anomaly detection
+* Extraction confidence scoring
+* Multi-site monitoring
+* Additional scraping providers
+* Intelligent notifications
+* Human-in-the-loop recovery for complex failures
+
+---
+
+## Vision
+
+The web is constantly changing.
+
+A reliable data pipeline shouldn't require a developer to manually repair it every time a website changes its structure.
+
+WebSentinel is an attempt to make web extraction more resilient by combining **monitoring, validation, AI-assisted diagnosis, and automated recovery** into one workflow.
+
+### WebSentinel
+
+**Keep your web data pipelines running as the web changes.**
