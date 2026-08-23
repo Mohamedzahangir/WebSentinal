@@ -6,53 +6,63 @@
 }
 
 @theme {
-  --color-accent: #10b981;
-  --color-accent-soft: rgba(16, 185, 129, 0.12);
+  --color-accent: #06b6d4; /* Cyan accent */
+  --color-accent-soft: rgba(6, 182, 212, 0.12);
+  --color-healthy: #10b981;
+  --color-warning: #f59e0b;
+  --color-failed: #ef4444;
+  
   --animate-fade-up: fade-up 0.45s cubic-bezier(0.21, 1.02, 0.73, 1) both;
-  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+  --animate-pulse-subtle: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-pulse-alert: pulse-alert 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-pulse-diagnose: pulse-diagnose 1.2s ease-in-out infinite;
   --animate-shimmer: shimmer 2.4s linear infinite;
-  --animate-flow: flow 1.6s linear infinite;
+  --animate-flow: flow 1.2s linear infinite;
+  --animate-fracture: fracture 0.3s ease-out forwards;
+  --animate-reconstruct: reconstruct 0.6s ease-out forwards;
 }
 
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse-dot {
-  0%,
-  100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 currentColor;
-  }
-  50% {
-    opacity: 0.75;
-    box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 18%, transparent);
-  }
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 2px currentColor); }
+  50% { opacity: 0.6; filter: drop-shadow(0 0 0px currentColor); }
+}
+
+@keyframes pulse-alert {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 60%, transparent); }
+  70% { box-shadow: 0 0 0 8px color-mix(in srgb, currentColor 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@keyframes pulse-diagnose {
+  0%, 100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+  50% { opacity: 0.8; transform: scale(0.95); filter: brightness(1.5); }
 }
 
 @keyframes shimmer {
-  from {
-    background-position: -200% 0;
-  }
-  to {
-    background-position: 200% 0;
-  }
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
 }
 
 @keyframes flow {
-  from {
-    stroke-dashoffset: 24;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes fracture {
+  0% { opacity: 1; stroke-dasharray: 100 0; }
+  50% { opacity: 0.5; stroke-dasharray: 10 10; }
+  100% { opacity: 0.2; stroke-dasharray: 2 20; }
+}
+
+@keyframes reconstruct {
+  0% { opacity: 0.2; stroke-dasharray: 2 20; }
+  50% { opacity: 0.8; stroke-dasharray: 20 5; }
+  100% { opacity: 1; stroke-dasharray: 100 0; }
 }
 
 html {
@@ -60,14 +70,23 @@ html {
 }
 
 body {
-  background-color: #09090b;
+  background-color: #0a0a0c; /* Near-black/graphite */
   color: #f4f4f5;
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 ::selection {
-  background: rgba(16, 185, 129, 0.25);
+  background: rgba(6, 182, 212, 0.25);
 }
 
 * {
@@ -98,15 +117,16 @@ body {
 }
 
 .card {
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
   background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
 }
 
 .grid-bg {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 20%, transparent 80%);
 }

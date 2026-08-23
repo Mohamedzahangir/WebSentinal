@@ -71,9 +71,9 @@ export function StateMachine({ stage }: { stage: HealStage | null }) {
                   active
                     ? failedHere
                       ? "text-red-400"
-                      : "text-emerald-300"
+                      : "text-cyan-300"
                     : done
-                      ? "text-zinc-400"
+                      ? "text-emerald-400"
                       : "text-zinc-600",
                 )}
               >
@@ -105,8 +105,8 @@ function Node({
           : done
             ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-400"
             : active
-              ? "border-emerald-400/70 bg-emerald-400/20 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.35)] animate-pulse-dot"
-              : "border-white/10 bg-zinc-900 text-zinc-700",
+              ? "border-cyan-400/70 bg-cyan-400/20 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.35)] animate-[pulse-diagnose_2s_infinite]"
+              : "border-white/10 bg-[#0a0a0c] text-zinc-700",
       )}
     >
       {done ? (

@@ -114,12 +114,11 @@ export function ExplorerView({ initialSource }: { initialSource?: string }) {
       </div>
 
       {/* Table */}
-      <Card>
-        <CardHeader title="Extracted records" />
+      <div className="rounded-2xl border border-white/[0.05] bg-[#0a0a0c] shadow-[inset_0_0_80px_rgba(0,0,0,0.5)]">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-left text-[13px]">
             <thead>
-              <tr className="border-b border-white/[0.06]">
+              <tr className="border-b border-white/[0.06] bg-black/40">
                 {COLUMNS.map((c) => (
                   <th key={c.key} className="px-5 py-3">
                     <button
@@ -132,8 +131,8 @@ export function ExplorerView({ initialSource }: { initialSource?: string }) {
                         setPage(1);
                       }}
                       className={cn(
-                        "label-micro flex items-center gap-1 transition-colors hover:text-zinc-300",
-                        sort === c.key && "!text-emerald-400",
+                        "label-micro flex items-center gap-1 transition-colors hover:text-cyan-400",
+                        sort === c.key && "!text-cyan-400 font-bold",
                       )}
                     >
                       {c.label}
@@ -164,11 +163,11 @@ export function ExplorerView({ initialSource }: { initialSource?: string }) {
               {(data?.table ?? []).map((row) => (
                 <tr
                   key={row.key}
-                  className="border-b border-white/[0.03] transition-colors last:border-0 hover:bg-white/[0.02]"
+                  className="group border-b border-white/[0.03] transition-colors last:border-0 hover:bg-cyan-500/[0.02]"
                 >
                   <td className="max-w-[280px] truncate px-5 py-3 font-medium text-zinc-100">
                     {row.url ? (
-                      <a href={row.url} target="_blank" rel="noreferrer" className="hover:text-emerald-400">
+                      <a href={row.url} target="_blank" rel="noreferrer" className="transition-colors group-hover:text-cyan-400">
                         {row.product}
                       </a>
                     ) : (
@@ -217,7 +216,7 @@ export function ExplorerView({ initialSource }: { initialSource?: string }) {
             </div>
           </div>
         ) : null}
-      </Card>
+      </div>
     </div>
   );
 }

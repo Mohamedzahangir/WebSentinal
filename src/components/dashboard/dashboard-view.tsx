@@ -12,8 +12,9 @@ import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { DemoBadge, LevelDot, SimulatedTag, SourceBadge } from "@/components/ui/status";
 import { RecordsChart } from "@/components/dashboard/records-chart";
 import { DemoPanel } from "@/components/dashboard/demo-panel";
+import { SentinelNetwork } from "@/components/dashboard/sentinel-network";
 import { apiGet, usePolling } from "@/lib/client";
-import { formatCompact, formatNumber, hostnameOf, timeAgo } from "@/lib/utils";
+import { cn, formatCompact, formatNumber, timeAgo } from "@/lib/utils";
 import type { DashboardPayload } from "@/types";
 
 export function DashboardView() {
@@ -57,34 +58,8 @@ export function DashboardView() {
 
       <DemoPanel demo={d.demo} onChange={refresh} />
 
-      {/* Metrics */}
-      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-        <Metric
-          icon={<Database className="h-3.5 w-3.5 text-emerald-500" />}
-          label="Active Sources"
-          value={formatNumber(d.metrics.activeSources)}
-        />
-        <Metric
-          icon={<GaugeCircle className="h-3.5 w-3.5 text-emerald-500" />}
-          label="Health"
-          value={`${d.metrics.healthAverage}%`}
-        />
-        <Metric
-          icon={<HeartPulse className="h-3.5 w-3.5 text-emerald-500" />}
-          label="Records"
-          value={formatCompact(d.metrics.totalRecords)}
-        />
-        <Metric
-          icon={<ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />}
-          label="Self-Heals"
-          value={formatNumber(d.metrics.selfHeals)}
-          sub={
-            d.metrics.openIncidents > 0
-              ? `${d.metrics.openIncidents} open incident${d.metrics.openIncidents > 1 ? "s" : ""}`
-              : undefined
-          }
-        />
-      </div>
+      {/* Sentinel Network Hero */}
+      <SentinelNetwork data={d} demo={d.demo} />
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
         {/* Chart */}
@@ -136,102 +111,61 @@ export function DashboardView() {
         </Card>
       </div>
 
-      {/* Source health */}
-      <Card>
-        <CardHeader
-          title="Source health"
-          action={
-            <Link
-              href="/sources"
-              className="flex items-center gap-1 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200"
-            >
-              Manage sources <ArrowUpRight className="h-3 w-3" />
-            </Link>
-          }
-        />
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[640px] text-left">
-            <thead>
-              <tr className="border-b border-white/[0.05]">
-                {["Source", "Status", "Records", "Health", "Last Run"].map((h) => (
-                  <th key={h} className="label-micro px-5 py-2.5 font-semibold">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {d.sources.map((s) => (
-                <tr
-                  key={s.id}
-                  className="group border-b border-white/[0.04] transition-colors last:border-0 hover:bg-white/[0.02]"
-                >
-                  <td className="px-5 py-3.5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[13px] font-medium text-zinc-100">{s.name}</span>
-                      {s.sample ? <SimulatedTag /> : null}
-                    </div>
-                    <span className="text-xs text-zinc-600">{hostnameOf(s.url)}</span>
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <SourceBadge status={s.status} />
-                  </td>
-                  <td className="px-5 py-3.5 font-mono text-[13px] tabular-nums text-zinc-300">
-                    {formatNumber(s.recordCount)}
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <HealthBar score={s.healthScore} />
-                  </td>
-                  <td className="px-5 py-3.5 text-xs text-zinc-500">{timeAgo(s.lastRunAt)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Live Intelligence Stream */}
+      <div className="pt-2">
+        <div className="flex items-center justify-between mb-3 border-b border-white/[0.04] pb-2">
+           <h2 className="text-xs font-semibold tracking-widest text-zinc-500 uppercase flex items-center gap-2">
+             <span className="relative flex h-2 w-2">
+               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+               <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+             </span>
+             Live Intelligence
+           </h2>
+           <Link href="/sources" className="text-[11px] text-zinc-500 hover:text-cyan-400 transition-colors uppercase tracking-wider">
+             Manage Sources →
+           </Link>
         </div>
-      </Card>
-    </div>
-  );
-}
-
-function Metric({
-  icon,
-  label,
-  value,
-  sub,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  sub?: string;
-}) {
-  return (
-    <Card className="hover:border-white/[0.12]">
-      <CardBody className="space-y-3 p-5 pb-4">
-        <div className="flex items-center justify-between">
-          <span className="label-micro">{label}</span>
-          {icon}
+        
+        <div className="flex flex-col">
+          {d.sources.map((s) => {
+            const isFailing = s.status === "error" || s.status === "failing";
+            const isWarning = s.status === "warning";
+            return (
+              <div
+                key={s.id}
+                className="group flex items-center justify-between py-2.5 border-b border-white/[0.03] last:border-0 hover:bg-white/[0.01] transition-colors"
+              >
+                <div className="flex items-center gap-4 min-w-[200px]">
+                  <span className={cn(
+                    "flex h-4 w-4 items-center justify-center text-[10px]",
+                    isFailing ? "text-red-500" : isWarning ? "text-amber-500" : "text-emerald-500"
+                  )}>
+                    {isFailing ? "✕" : isWarning ? "⚠" : "●"}
+                  </span>
+                  <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-200 truncate max-w-[220px]">
+                    {s.name}
+                    {s.sample ? <span className="ml-2 text-[9px] text-cyan-500/50">DEMO</span> : null}
+                  </span>
+                </div>
+                
+                <div className="flex items-center gap-8 text-right min-w-[300px] justify-end">
+                  <span className={cn(
+                    "font-mono text-[11px] uppercase tracking-widest font-semibold w-24 text-left",
+                    isFailing ? "text-red-400" : isWarning ? "text-amber-400" : "text-emerald-400"
+                  )}>
+                    {s.status}
+                  </span>
+                  <span className="font-mono text-[11px] tabular-nums text-zinc-400 w-32">
+                    <span className="text-white">{formatNumber(s.recordCount)}</span> records
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="font-mono text-[26px] font-bold leading-none tracking-tight text-zinc-50">
-          {value}
-        </div>
-        {sub ? <p className="text-[11px] font-medium text-red-400">{sub}</p> : null}
-      </CardBody>
-    </Card>
-  );
-}
-
-function HealthBar({ score }: { score: number }) {
-  const color =
-    score >= 90 ? "bg-emerald-500" : score >= 60 ? "bg-amber-500" : "bg-red-500";
-  return (
-    <div className="flex items-center gap-2">
-      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-white/[0.07]">
-        <div
-          className={`h-full rounded-full transition-all duration-700 ${color}`}
-          style={{ width: `${Math.max(2, Math.min(100, score))}%` }}
-        />
       </div>
-      <span className="font-mono text-xs tabular-nums text-zinc-300">{score}%</span>
     </div>
   );
 }
+
+

@@ -54,19 +54,17 @@ export function HealingView() {
       </div>
 
       {/* Live state machine */}
-      <Card className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
-        <CardBody className="py-7">
-          <StateMachine stage={currentStage} />
-        </CardBody>
-      </Card>
+      <div className="relative overflow-hidden rounded-2xl border border-white/[0.04] bg-[#0a0a0c] shadow-[inset_0_0_100px_rgba(0,0,0,0.8)] px-2 py-8">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
+        <StateMachine stage={currentStage} />
+      </div>
 
       {/* Events */}
-      <Card>
-        <CardHeader title="Heal events" />
-        <CardBody className="space-y-3 p-4">
+      <div className="space-y-4">
+        <h2 className="text-sm font-semibold tracking-wide text-zinc-100 uppercase mt-8 mb-4">Event History</h2>
+        <div className="space-y-3">
           {events.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-14 text-center">
+            <div className="flex flex-col items-center gap-3 py-14 text-center rounded-xl border border-white/[0.04] bg-white/[0.01]">
               <FlaskConical className="h-8 w-8 text-zinc-700" />
               <p className="max-w-sm text-sm leading-relaxed text-zinc-600">
                 No heal events yet. Trigger the labeled simulation above to see the full
@@ -75,37 +73,37 @@ export function HealingView() {
             </div>
           ) : null}
           {events.map((event) => (
-            <Link key={event.id} href={`/healing/${event.id}`} className="block">
-              <div className="group flex flex-col gap-3 rounded-lg border border-white/[0.06] bg-black/20 px-4 py-4 transition-all hover:border-emerald-500/30 hover:bg-emerald-500/[0.03] sm:flex-row sm:items-center">
+            <Link key={event.id} href={`/healing/${event.id}`} className="block outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50 rounded-xl">
+              <div className="group flex flex-col gap-3 rounded-xl border border-white/[0.04] bg-[#0a0a0c] px-5 py-4 transition-all hover:border-cyan-500/30 hover:bg-cyan-500/[0.03] hover:shadow-[0_0_20px_rgba(6,182,212,0.1)] sm:flex-row sm:items-center">
                 <div className="min-w-0 flex-1 space-y-1.5">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[13px] font-semibold text-zinc-100">
+                    <span className="text-[14px] font-semibold text-zinc-100 group-hover:text-cyan-400 transition-colors">
                       {event.sourceName}
                     </span>
                     {event.simulated ? <SimulatedTag /> : null}
                     <StageBadge stage={event.stage} />
                   </div>
-                  <p className="line-clamp-1 text-xs text-zinc-500">{event.failureType}</p>
+                  <p className="line-clamp-1 text-xs text-zinc-500">{event.failureType.replace(/_/g, " ")}</p>
                 </div>
-                <div className="flex shrink-0 items-center gap-5 font-mono text-xs tabular-nums text-zinc-500">
+                <div className="flex shrink-0 items-center gap-6 font-mono text-[13px] tabular-nums text-zinc-500">
                   <span>
                     {formatCompactCount(event.beforeCount)} →{" "}
                     <span
                       className={
-                        event.afterCount != null ? "text-emerald-400" : "text-red-400"
+                        event.afterCount != null ? "text-emerald-400 font-bold" : "text-red-400"
                       }
                     >
                       {formatCompactCount(event.afterCount ?? 0)}
                     </span>{" "}
                     records
                   </span>
-                  <span>{timeAgo(event.detectedAt)}</span>
+                  <span className="text-zinc-600 w-20 text-right">{timeAgo(event.detectedAt)}</span>
                 </div>
               </div>
             </Link>
           ))}
-        </CardBody>
-      </Card>
+        </div>
+      </div>
 
       <p className="flex items-center gap-2 text-xs text-zinc-600">
         <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />

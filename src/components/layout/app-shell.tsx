@@ -76,7 +76,7 @@ export function AppShell({
       {/* Mobile topbar */}
       <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-white/[0.06] bg-zinc-950/90 px-4 backdrop-blur md:hidden">
         <Link href="/" className="font-mono text-sm font-bold tracking-[0.18em] text-zinc-100">
-          WEB<span className="text-emerald-400">SENTINEL</span>
+          WEB<span className="text-cyan-400">SENTINEL</span>
         </Link>
         <div className="flex items-center gap-2">
           {demo?.enabled ? <DemoBadge small /> : null}
@@ -111,7 +111,7 @@ export function AppShell({
         </div>
       ) : null}
 
-      <main className="min-w-0 flex-1 px-4 pb-16 pt-20 md:pl-[248px] md:pr-8 md:pt-8 lg:px-10">
+      <main className="min-w-0 flex-1 px-4 pb-16 pt-20 md:pl-[264px] md:pr-8 md:pt-8 lg:pl-[280px] lg:pr-10">
         {children}
       </main>
     </div>
@@ -149,7 +149,7 @@ function NavLink({
       <Icon
         className={cn(
           "h-4 w-4 transition-colors",
-          active ? "text-emerald-400" : "text-zinc-600 group-hover:text-zinc-400",
+          active ? "text-cyan-400" : "text-zinc-600 group-hover:text-zinc-400",
         )}
       />
       {label}
@@ -165,11 +165,11 @@ function NavLink({
 function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2.5 border-b border-white/[0.06] px-5 py-[18px]">
-      <span className="relative flex h-7 w-7 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10">
-        <Radar className="h-3.5 w-3.5 text-emerald-400" />
+      <span className="relative flex h-7 w-7 items-center justify-center rounded-lg border border-cyan-500/30 bg-cyan-500/10">
+        <Radar className="h-3.5 w-3.5 text-cyan-400" />
       </span>
       <span className="font-mono text-[13px] font-bold tracking-[0.18em] text-zinc-100">
-        WEB<span className="text-emerald-400">SENTINEL</span>
+        WEB<span className="text-cyan-400">SENTINEL</span>
       </span>
     </Link>
   );
@@ -179,7 +179,7 @@ function SidebarFooter({ stacked }: { stacked?: boolean }) {
   return (
     <div className={cn("border-t border-white/[0.06] p-4", stacked && "w-full")}>
       <div className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-        <Activity className="h-3.5 w-3.5 text-emerald-500" />
+        <Activity className="h-3.5 w-3.5 text-cyan-500" />
         <p className="text-[11px] leading-tight text-zinc-500">
           Bright Data CLI connected
         </p>

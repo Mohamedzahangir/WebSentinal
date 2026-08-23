@@ -19,6 +19,7 @@ import { SimulatedTag, SourceBadge } from "@/components/ui/status";
 import { apiGet, apiPost, usePolling } from "@/lib/client";
 import { formatNumber, timeAgo } from "@/lib/utils";
 import type { Collector, Source } from "@/types";
+import { cn } from "@/lib/utils";
 
 type SourcesPayload = { sources: Source[]; collectors: Collector[] };
 
@@ -48,7 +49,7 @@ export function SourcesView() {
         </Button>
       </div>
 
-      <div className="space-y-3">
+      <div className="rounded-2xl border border-white/[0.05] bg-[#0a0a0c] shadow-[inset_0_0_80px_rgba(0,0,0,0.5)]">
         {sources.map((source) => (
           <SourceRow
             key={source.id}
@@ -58,11 +59,9 @@ export function SourcesView() {
           />
         ))}
         {!sources.length ? (
-          <Card>
-            <CardBody className="py-16 text-center text-sm text-zinc-600">
-              No sources yet. Add your first website to start monitoring.
-            </CardBody>
-          </Card>
+          <div className="py-16 text-center text-sm text-zinc-600">
+            No sources yet. Add your first website to start monitoring.
+          </div>
         ) : null}
       </div>
 
@@ -114,8 +113,8 @@ function SourceRow({
   };
 
   return (
-    <Card className="hover:border-white/[0.12]">
-      <CardBody className="flex flex-col gap-4 p-5 lg:flex-row lg:items-center">
+    <div className="group border-b border-white/[0.04] last:border-0 transition-colors hover:bg-cyan-500/[0.02] hover:border-cyan-500/20">
+      <div className="flex flex-col gap-4 p-5 lg:flex-row lg:items-center">
         <div className="min-w-0 flex-1 space-y-1.5">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm font-medium text-zinc-100">{source.name}</span>
@@ -138,7 +137,7 @@ function SourceRow({
 
         <div className="grid grid-cols-3 gap-5 lg:w-[300px]">
           <MiniStat label="Records" value={formatNumber(source.recordCount)} />
-          <MiniStat label="Health" value={`${source.healthScore}%`} />
+          <MiniStat label="Health" value={`${source.healthScore}%`} highlight={source.healthScore > 90} />
           <MiniStat label="Last run" value={timeAgo(source.lastRunAt)} />
         </div>
 
@@ -183,16 +182,16 @@ function SourceRow({
             </Button>
           </Link>
         </div>
-      </CardBody>
-    </Card>
+      </div>
+    </div>
   );
 }
 
-function MiniStat({ label, value }: { label: string; value: string }) {
+function MiniStat({ label, value, highlight = false }: { label: string; value: string, highlight?: boolean }) {
   return (
     <div>
-      <p className="label-micro">{label}</p>
-      <p className="mt-1 font-mono text-[13px] tabular-nums text-zinc-200">{value}</p>
+      <p className="label-micro text-zinc-500">{label}</p>
+      <p className={cn("mt-1 font-mono text-[14px] tabular-nums", highlight ? "text-cyan-400 font-bold" : "text-zinc-200")}>{value}</p>
     </div>
   );
 }

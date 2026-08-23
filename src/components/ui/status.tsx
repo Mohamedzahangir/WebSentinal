@@ -27,7 +27,7 @@ export function StatusDot({
       className={cn(
         "inline-block h-2 w-2 shrink-0 rounded-full",
         color,
-        pulse && (status === "healthy" || status === "healed") && "animate-pulse-dot",
+        pulse && (status === "healthy" || status === "healed") && "animate-[pulse-subtle_2s_ease-in-out_infinite]",
         className,
       )}
     />
@@ -82,7 +82,7 @@ export function StageBadge({ stage }: { stage: HealStage }) {
   const style = ACTIVE_STAGES.includes(stage)
     ? stage === "awaiting_approval"
       ? "text-amber-300 border-amber-500/30 bg-amber-500/10"
-      : "text-sky-300 border-sky-500/25 bg-sky-500/10 animate-pulse-dot"
+      : "text-cyan-300 border-cyan-500/25 bg-cyan-500/10 animate-[pulse-subtle_2s_ease-in-out_infinite]"
     : stage === "recovered"
       ? "text-emerald-300 border-emerald-500/25 bg-emerald-500/10"
       : "text-zinc-400 border-white/10 bg-white/[0.04]";
@@ -106,7 +106,7 @@ export function LevelDot({ level }: { level: ActivityLevel }) {
         ? "bg-red-500"
         : level === "warn"
           ? "bg-amber-500"
-          : "bg-sky-400";
+          : "bg-cyan-400";
   return <span className={cn("mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full", color)} />;
 }
 

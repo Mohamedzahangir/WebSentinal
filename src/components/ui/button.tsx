@@ -12,7 +12,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants = {
   primary:
-    "bg-emerald-500 text-zinc-950 font-semibold hover:bg-emerald-400 active:bg-emerald-500 shadow-[0_0_0_1px_rgba(16,185,129,0.35)]",
+    "bg-cyan-500 text-zinc-950 font-semibold hover:bg-cyan-400 active:bg-cyan-500 shadow-[0_0_0_1px_rgba(6,182,212,0.35)]",
   secondary:
     "bg-white/[0.06] text-zinc-100 hover:bg-white/[0.1] border border-white/[0.08]",
   ghost: "text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.05]",
@@ -36,7 +36,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       disabled={disabled || loading}
       className={cn(
         "inline-flex select-none items-center justify-center whitespace-nowrap transition-all duration-150",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50",
         "disabled:pointer-events-none disabled:opacity-45",
         variants[variant],
         sizes[size],
